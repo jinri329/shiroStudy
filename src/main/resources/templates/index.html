@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+<h5>我是首页</h5>
+<!--当thymeleaf整合shiro后 可以直接在需要授权的标签上添加shiro语句
+某个标签能多个角色访问 使用hasAnyRole 属性 用逗号隔开写上多个角色就行了
+-->
+<ul>
+    <li shiro:hasRole="admin">商品管理</li>
+    <li shiro:hasAnyRole="admin,普通管理员">订单管理</li>
+    <li shiro:hasRole="普通管理员">内容管理</li>
+    <li shiro:hasRole="普通管理员">活动管理</li>
+    <li shiro:hasRole="普通管理员">统计管理</li>
+</ul>
+</body>
+</html>

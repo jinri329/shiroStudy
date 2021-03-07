@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 映射文件 -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 和绑定的接口全类名对应 -->
+<mapper namespace="com.zyy.shirodemo.dao.UserDao">
+    <insert id="addUser" parameterType="com.zyy.shirodemo.bean.UserTao">
+        INSERT INTO tbuser (userName, passWord, phone, email, created, updated, salt, num) VALUE (#{userName},#{passWord}, #{phone}, #{email}, #{created}, #{updated}, #{salt}, #{num})
+    </insert>
+    <select id="findUserByUserName" parameterType="string" resultType="com.zyy.shirodemo.bean.UserTao">
+        SELECT * FROM tbuser WHERE userName=#{userName}
+    </select>
+    <resultMap id="roles" type="com.zyy.shirodemo.bean.UserTao">
+        <id column="userId" property="id"></id>
+        <result column="userName" property="userName"></result>
+        <collection property="roles" ofType="com.zyy.shirodemo.bean.Role">
+            <id column="roleId" property="id"></id>
+            <result column="role_name" property="roleName"></result>
+        </collection>
+    </resultMap>
+    <select id="findUserAndRolesById" parameterType="int" resultMap="roles">
+        SELECT
+	u.id userId,
+	u.userName,
+	r.id roleId,
+	r.role_name
+FROM
+	tbuser u
+LEFT JOIN tbuser_role u_r ON u.id = u_r.u_id
+LEFT JOIN tbrole r ON u_r.r_id = r.id
+WHERE
+	u.id = #{id}
+    </select>
+</mapper>
